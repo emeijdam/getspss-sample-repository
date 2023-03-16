@@ -61,7 +61,7 @@ def get_pkg_installed(package):
          #print('{} ({}) is installed'.format(dist.key, dist.version))
          return dist.key, dist.version
     except pkg_resources.DistributionNotFound:
-         print('{} is NOT installed'.format(package))
+         #print('{} is NOT installed'.format(package))
          return package, None
 
 def install_python_package(packagename, python_executable): 
@@ -129,5 +129,3 @@ packages = [
 package_manager(packages, True)
 
 end program.
-
-
