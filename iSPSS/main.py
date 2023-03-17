@@ -104,7 +104,7 @@ def intercept_input(event, *args):
 
 def main():
     print(Fore.RED + "SPSS Statistics Terminal" + Style.RESET_ALL)
-    sys.addaudithook(intercept_input)
+    # sys.addaudithook(intercept_input)
     inputlist = []
     nextline = False
     while True:
