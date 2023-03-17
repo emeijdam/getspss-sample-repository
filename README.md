@@ -7,6 +7,8 @@ https://www.ibm.com/docs/en/spss-statistics/29.0.0?topic=python-running-code
 
 https://github.com/sindresorhus/execa
 
+https://odata4.cbs.nl/Datasets
+
 # PYTHONENV.BAT
 `
 @for /f "tokens=* delims=" %%i in ('java.exe -Dapplication.home"=%SPSS_HOME%" -classpath "%SPSS_HOME%\*" com.spss.java_client.core.plugin.ConfigUtil %FOLDER_NAME%') do set PYTHON_HOME=%%i
