@@ -1,5 +1,6 @@
 import spss
 import pandas as pd
+import platform
 
 def dataframeToDataset(df, datasetName=None):
     if datasetName != None:
@@ -10,21 +11,20 @@ def dataframeToDataset(df, datasetName=None):
     for column in columns:
         if df[column].dtype == "object":
             stringLeght = int(df[column].str.len().max())
-            datasetObj.varlist.append(column,stringLeght)
+            datasetObj.varlist.append(column, stringLeght)
         else:
-            datasetObj.varlist.append(column,0)
+            datasetObj.varlist.append(column, 0)
     for index, row in df.iterrows():
         rowlist = []
         for column in columns:
             rowlist.append(row[column])
-        #print(rowlist)
         datasetObj.cases.append(rowlist)
-    datasetName =  datasetObj.name
+    datasetName = datasetObj.name
     spss.EndDataStep()
     return datasetName
 
 
-def datasetToDataframe(datasetname):
+def datasetToDataframe(datasetname, variableLabelsExport= True, valueLabelsExport=True):
     varListObj2 = []
     caseListObj2 = []
     spss.StartDataStep()
@@ -32,18 +32,42 @@ def datasetToDataframe(datasetname):
     caseListObj = datasetObj.cases
     varListObj = datasetObj.varlist
     for var in varListObj:
-        varListObj2.append(var.label)
+        dfvarname = var.label if variableLabelsExport else var.name
+        varListObj2.append(dfvarname)
+   
     for case in caseListObj:
-        caseListObj2.append(case)
+        if valueLabelsExport:
+            newcase =[]
+            for index, cell in enumerate(case):
+                valuelabelsDic = varListObj[index].valueLabels
+                if len(valuelabelsDic) > 0:
+                    if cell in valuelabelsDic.data:
+                        cell = valuelabelsDic.data[cell]
+                newcase.append(cell)
+            caseListObj2.append(newcase)
+        else:
+            caseListObj2.append(case)
     spss.EndDataStep()
     data = caseListObj2
     colums = varListObj2
     return pd.DataFrame(data,columns=colums)
 
-strtTest = "GET FILE='C:\PROGRA~1\IBM\SPSSST~1\Samples\English\car_sales.sav'."
+
+
+#spss.Submit('SHOW LICENSE.')
+
+if platform.system() == 'Windows':
+    spss.Submit("FILE HANDLE DEFAULTSAMPLEFOLDERHANDLE /NAME='C:\Program Files\IBM\SPSS Statistics\Samples\English'.")
+else:
+    spss.Submit("FILE HANDLE DEFAULTSAMPLEFOLDERHANDLE /NAME='/Applications/IBM SPSS Statistics/Resources/Samples/English'.")
+
+
+strtTest = "GET FILE='DEFAULTSAMPLEFOLDERHANDLE/survey_sample.sav'."
+print(strtTest)
 spss.Submit(strtTest)
 currentdatasetname = spss.ActiveDataset()
-df = datasetToDataframe(currentdatasetname)
+df = datasetToDataframe(currentdatasetname, True)
+print(list(df))
 print (df)
 
 students = [('Ankit', 22, 'A'),
