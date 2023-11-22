@@ -42,7 +42,6 @@ def datasetToDataframe(datasetname, variableLabelsExport= True, valueLabelsExpor
             for index, cell in enumerate(case):
                 valuelabelsDic = varListObj[index].valueLabels
                 #print(varListObj[index].missingValues)
-                #missingValues
                 if len(valuelabelsDic) > 0:
                     if cell in valuelabelsDic.data:
                         # IF cell is missing value
@@ -66,7 +65,7 @@ def datasetToDataframe(datasetname, variableLabelsExport= True, valueLabelsExpor
                             #     print('NO MISSINGS')
                             case 1:
                                 DiscreteValue = missingTuple[1]
-                                if (cell == DiscreteValue1):
+                                if (cell == DiscreteValue):
                                     IsMissing = True
                             case 2:
                                 DiscreteValue1 = missingTuple[1]
@@ -74,14 +73,14 @@ def datasetToDataframe(datasetname, variableLabelsExport= True, valueLabelsExpor
                                 if (cell == DiscreteValue1 or cell == DiscreteValue2):
                                     IsMissing = True
                                 #print(2, DiscreteValue1, DiscreteValue2)
-                            case 2:
+                            case 3:
                                 DiscreteValue1 = missingTuple[1]
                                 DiscreteValue2 = missingTuple[2]
                                 DiscreteValue3 = missingTuple[3]
                                 if (cell == DiscreteValue1 or cell == DiscreteValue2 or cell==DiscreteValue3):
                                     IsMissing = True
                         if IsMissing: 
-                            #print('jaa ik heb wat gevonden het is een wonder!!!')
+                            #print('jaa ik heb wat gevonden het is een wonder!!!', varListObj[index].name, cell)
                             cell = np.nan
                         else:
                             cell = valuelabelsDic.data[cell] 
@@ -122,7 +121,7 @@ students = [('Ankit', 22, 'A'),
 df = pd.DataFrame(students, columns =['Name', 'Age', 'Section'],
                       index =['1', '2', '3', '4'])
 
-#DatasetName = dataframeToDataset(df, "joop")
-#spss.Submit('DATASET ACTIVATE ' + DatasetName)
-#spss.Submit('list.')
-#spss.Submit('freq  Name.')
+DatasetName = dataframeToDataset(df, "joop")
+spss.Submit('DATASET ACTIVATE ' + DatasetName)
+spss.Submit('list.')
+spss.Submit('freq  Name.')
