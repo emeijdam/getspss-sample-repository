@@ -41,7 +41,7 @@ def datasetToDataframe(datasetname, variableLabelsExport= True, valueLabelsExpor
             newcase =[]
             for index, cell in enumerate(case):
                 valuelabelsDic = varListObj[index].valueLabels
-                print(varListObj[index].name, varListObj[index].missingValues)
+                #print(varListObj[index].missingValues)
                 if len(valuelabelsDic) > 0:
                     if cell in valuelabelsDic.data:
                         # IF cell is missing value

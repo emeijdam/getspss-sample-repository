@@ -11,9 +11,8 @@ else:
     spss.Submit("FILE HANDLE DEFAULTSAMPLEFOLDERHANDLE /NAME='/Applications/IBM SPSS Statistics/Resources/Samples/English'.")
 END PROGRAM.
 
-GET 
-  FILE='C:\PROGRA~1\DASC\IBMSPS~1\Samples\English\survey_sample.sav'.
-DATASET NAME survey WINDOW=FRONT.
+GET FILE='C:\PROGRA~1\DASC\IBMSPS~1\Samples\English\survey_sample.sav'. 
+    DATASET NAME SURVEY WINDOW=FRONT.
 
 BEGIN PROGRAM.
 import spss, spssaux
@@ -114,8 +113,6 @@ def package_manager(package_list, install_if_not_exists=False):
     packages_status_dict = get_pkg_installed_dict(packages)     
     create_table(packages_status_dict)      
     python3_executable, python3_executable_found = get_python3_executable_from_spss_settings()
-    #print(python3_executable, python3_executable_found)
-    #print(packages_status_dict)
     not_installed_package_list = [k for k, v in packages_status_dict.items() if v == None]
     #print(not_installed_package_list)
     if python3_executable_found != None:
@@ -140,9 +137,9 @@ packages = [
      'requests'
 ]   
 
-#package_manager(packages, True)
-
+package_manager(packages, True)
 END PROGRAM.
+
 
 BEGIN PROGRAM.
 import pandas as pd
@@ -187,9 +184,3 @@ with open("c:\\temp\\file.html", "w", encoding='utf-8') as file:
     file.write(html)
 webbrowser.open("c:\\temp\\file.html",new=2)
 END PROGRAM.
-
-* IN DE UITVOER, ZIE DE KOLOM dy/dx voor de average marginal effects.
-
-
-* BEWAAR DE UITVOER.
-*OUTPUT SAVE OUTFILE = "C:\Jos\output-average-marginal-effects.spv"  .
