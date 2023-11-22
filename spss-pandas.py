@@ -1,5 +1,6 @@
 import spss
 import pandas as pd
+import numpy as np
 import platform
 
 def dataframeToDataset(df, datasetName=None):
@@ -40,9 +41,49 @@ def datasetToDataframe(datasetname, variableLabelsExport= True, valueLabelsExpor
             newcase =[]
             for index, cell in enumerate(case):
                 valuelabelsDic = varListObj[index].valueLabels
+                #print(varListObj[index].missingValues)
                 if len(valuelabelsDic) > 0:
                     if cell in valuelabelsDic.data:
-                        cell = valuelabelsDic.data[cell]
+                        # IF cell is missing value
+                        missingTuple = varListObj[index].missingValues
+                        IsMissing = False
+                        match missingTuple[0]:
+                            case -3:
+                                StartPointOfRange = missingTuple[1]
+                                EndPointOfRange = missingTuple[2]
+                                DiscreteValue = missingTuple[3]
+                                if ((cell >= StartPointOfRange and cell <= EndPointOfRange) or cell==DiscreteValue):
+                                    IsMissing = True
+                            case -2:
+                                StartPointOfRange = missingTuple[1]
+                                EndPointOfRange = missingTuple[2]
+                                if (cell >= StartPointOfRange and cell <= EndPointOfRange):
+                                    IsMissing = True
+                            # case -1:
+                            #     print(-1, missingTuple)
+                            # case 0:
+                            #     print('NO MISSINGS')
+                            case 1:
+                                DiscreteValue = missingTuple[1]
+                                if (cell == DiscreteValue1):
+                                    IsMissing = True
+                            case 2:
+                                DiscreteValue1 = missingTuple[1]
+                                DiscreteValue2 = missingTuple[2]
+                                if (cell == DiscreteValue1 or cell == DiscreteValue2):
+                                    IsMissing = True
+                                #print(2, DiscreteValue1, DiscreteValue2)
+                            case 2:
+                                DiscreteValue1 = missingTuple[1]
+                                DiscreteValue2 = missingTuple[2]
+                                DiscreteValue3 = missingTuple[3]
+                                if (cell == DiscreteValue1 or cell == DiscreteValue2 or cell==DiscreteValue3):
+                                    IsMissing = True
+                        if IsMissing: 
+                            #print('jaa ik heb wat gevonden het is een wonder!!!')
+                            cell = np.nan
+                        else:
+                            cell = valuelabelsDic.data[cell] 
                 newcase.append(cell)
             caseListObj2.append(newcase)
         else:
@@ -67,8 +108,8 @@ print(strtTest)
 spss.Submit(strtTest)
 currentdatasetname = spss.ActiveDataset()
 df = datasetToDataframe(currentdatasetname, True)
-print(list(df))
-print (df)
+#print(list(df))
+print ('missing count:', df.isna().sum().sum())
 
 students = [('Ankit', 22, 'A'),
            ('Swapnil', 22, 'B'),
@@ -80,7 +121,7 @@ students = [('Ankit', 22, 'A'),
 df = pd.DataFrame(students, columns =['Name', 'Age', 'Section'],
                       index =['1', '2', '3', '4'])
 
-DatasetName = dataframeToDataset(df, "joop")
-spss.Submit('DATASET ACTIVATE ' + DatasetName)
-spss.Submit('list.')
-spss.Submit('freq  Name.')
+#DatasetName = dataframeToDataset(df, "joop")
+#spss.Submit('DATASET ACTIVATE ' + DatasetName)
+#spss.Submit('list.')
+#spss.Submit('freq  Name.')
