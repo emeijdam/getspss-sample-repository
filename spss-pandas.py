@@ -1,4 +1,4 @@
-import spss
+import spss, SpssClient
 import pandas as pd
 import numpy as np
 import platform
@@ -126,3 +126,5 @@ DatasetName = dataframeToDataset(df, "joop")
 spss.Submit('DATASET ACTIVATE ' + DatasetName)
 spss.Submit('list.')
 spss.Submit('freq  Name.')
+
+

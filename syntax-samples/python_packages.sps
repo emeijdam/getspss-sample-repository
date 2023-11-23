@@ -80,8 +80,6 @@ def uninstall_python_package(packagename, python_executable):
         
 def get_site_package_info(python3_executable):
     this_env = os.environ.copy()
-    #this_env["PATH"] =  this_env["PATH"] + ';' + os.path.normpath('C:\\Users\\ed\\AppData\\Roaming\\Python\\Python310\\site-packages')
-    #this_env["PATH"] =  this_env["PATH"] + ';' + os.path.normpath('C:\\Users\\ed\\AppData\\Roaming\\Python\\Python310\\Scripts')
     for k in this_env["PATH"].split(';'):
         print(k)
     print('pypath')
